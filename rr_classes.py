@@ -6,6 +6,7 @@ class User:
         self.first_name = self.validate_name(first_name)
         self.last_name = self.validate_name(last_name)
         self.to_do_tasks = PriorityQueue()
+        self.completed_tasks = Stack()
 
     def validate_name(self, name):
         # Check that the name contains only letters and allowed symbols
@@ -19,7 +20,9 @@ class User:
     def complete_task(self):
         if len(self.to_do_tasks) == 0:
             return None
-        return self.to_do_tasks.pop()
+        completed_task = self.to_do_tasks.pop()
+        self.completed_tasks.push(completed_task)
+        return completed_task
 
 
 class PriorityQueue:
@@ -34,7 +37,37 @@ class PriorityQueue:
     def pop(self):
         return heapq.heappop(self._queue)[-1]
 
+    def print_queue(self):
+        for _, _, item in sorted(self._queue):
+            print(item)
+
     def __len__(self):
         return len(self._queue)
 
 
+class Stack:
+    def __init__(self):
+        self._items = []
+
+    def push(self, item):
+        self._items.append(item)
+
+    def pop(self):
+        if len(self._items) == 0:
+            raise IndexError('pop from empty stack')
+        return self._items.pop()
+
+    def peek(self):
+        if len(self._items) == 0:
+            raise IndexError('peek from empty stack')
+        return self._items[-1]
+
+    def is_empty(self):
+        return len(self._items) == 0
+
+    def print_stack(self):
+        for item in reversed(self._items):
+            print(item)
+
+    def __len__(self):
+        return len(self._items)
