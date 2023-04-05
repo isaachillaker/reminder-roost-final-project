@@ -40,9 +40,21 @@ class User:
         return name.strip()
 
     def add_task(self, task=None, priority=None):
+        """
+        THis method adds a task to the 'to_do_tasks' PQ object.
+
+        1) An error msg is returned if one of the arguments is left blank.
+
+        2) If arguments are satisfied, push the new task into the 'to_do_tasks' PQ object.
+
+        :param task: The name of the task (string)
+        :param priority: The priority level of the task (integer)
+        """
+        # 1
         error_msg = "Both task and priority must be specified!"
         if task is None or priority is None:
             return error_msg
+        # 2
         self.to_do_tasks.push(task, priority)
 
     def complete_task(self, task=None):
@@ -75,6 +87,16 @@ class User:
             return None
 
     def delete_task(self, task):
+        """
+        This method removes a specified task from the 'to_do_tasks' PQ object. It is then moved into
+        the 'deleted_tasks' Stack object.
+
+        Use a for loop to traverse the PQ object, returning the 'item' attribute that matches the
+        task argument given by the user. If there is a match, then that task is removed from the PQ
+        object and pushed into the 'deleted_tasks' Stack object.
+
+        :param task: Task to be deleted, its name
+        """
         for priority, index, item in self.to_do_tasks._queue:
             if item == task:
                 self.to_do_tasks._queue.remove((priority, index, item))
@@ -82,7 +104,11 @@ class User:
                 return item
 
     def undo(self):
-        if len(self.completed_tasks) == 0 and len(self.deleted_tasks) == 0:
+        """
+        This method removes the last item added to the 'deleted_tasks' Stack object and returns it
+        to the 'to_do_tasks' PQ object.
+        """
+        if len(self.deleted_tasks) == 0:
             return None
 
         if len(self.deleted_tasks) > 0:
