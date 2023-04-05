@@ -1,22 +1,10 @@
 from rr_classes import User
 
-# Create a new user and add some tasks
-user = User('John', 'Doe')
-user.add_task('task 1', 3)
-user.add_task('task 2', 1)
-user.add_task('task 3', 2)
+# Create a user with an invalid first name
+user1 = User("Bob", "Smith")
 
-user.complete_task()
 
-# DRIVER
-
-# Print User To Do Tasks (PQ)
-user.to_do_tasks.print_queue()
-
-print("")
-
-# Print User Completed Tasks (Stack)
-user.completed_tasks.print_stack()
+print(user1.first_name, user1.last_name)
 
 
 
