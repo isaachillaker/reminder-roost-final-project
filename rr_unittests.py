@@ -14,6 +14,10 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(len(user.to_do_tasks), 0)
         self.assertEqual(len(user.completed_tasks), 0)
 
+    # def test_get_valid_name(self):
+
+    # def test_validate_name(self):
+
     def test_add_task(self):
         user = User('John', 'Doe')
         user.add_task('Task 1', 1)

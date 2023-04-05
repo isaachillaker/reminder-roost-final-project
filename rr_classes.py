@@ -13,6 +13,7 @@ class User:
         self.completed_tasks = Stack()
         self.deleted_tasks = Stack()
 
+    # MISSING UNIT TEST!
     def get_valid_name(self, name):
         """
         This method is called when a new User object is created and no values are assigned to
@@ -28,6 +29,7 @@ class User:
             except ValueError as e:
                 print(e)
 
+    # MISSING UNIT TEST!
     def validate_name(self, name):
         """
         This method is used to validate the 'first_name' and 'last_name' attributes
