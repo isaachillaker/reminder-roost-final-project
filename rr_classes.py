@@ -30,12 +30,20 @@ class User:
     def add_task(self, task, priority):
         self.to_do_tasks.push(task, priority)
 
-    def complete_task(self):
-        if len(self.to_do_tasks) == 0:
+    def complete_task(self, task=None):
+        if task is None:
+            if len(self.to_do_tasks) == 0:
+                return None
+            completed_task = self.to_do_tasks.pop()
+            self.completed_tasks.push(completed_task)
+            return completed_task
+        else:
+            for priority, index, item in self.to_do_tasks._queue:
+                if item == task:
+                    self.to_do_tasks._queue.remove((priority, index, item))
+                    self.completed_tasks.push(item)
+                    return item
             return None
-        completed_task = self.to_do_tasks.pop()
-        self.completed_tasks.push(completed_task)
-        return completed_task
 
 
 class PriorityQueue:
