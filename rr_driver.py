@@ -16,7 +16,6 @@ print("")
 
 # Complete highest priority task
 user.complete_task("Do homework")
-user.complete_task()
 
 # completed_tasks (Stack)
 print("COMPLETED TASKS - (Stack)")
@@ -25,8 +24,26 @@ user.completed_tasks.print_stack()
 print("")
 
 # to_do_tasks (PQ)
-print("YOUR TASKS - (Queue)")
+print("YOUR TASKS REMAINING - (Queue)")
 user.to_do_tasks.print_queue()
+
+print("")
+
+# Delete a task
+print("TASK DELETED")
+user.delete_task("Go grocery shopping")
+
+print("")
+
+# to_do_tasks (PQ)
+print("YOUR TASKS REMAINING - (Queue)")
+user.to_do_tasks.print_queue()
+
+print("")
+
+# to_do_tasks (PQ)
+print("PRINT DELETED TASKS - (Stack)")
+user.deleted_tasks.print_stack()
 
 
 
