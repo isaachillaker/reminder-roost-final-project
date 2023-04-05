@@ -45,5 +45,15 @@ print("")
 print("PRINT DELETED TASKS - (Stack)")
 user.deleted_tasks.print_stack()
 
+print("")
 
+user.undo()
 
+print("PRINT DELETED TASKS - (Stack)")
+user.deleted_tasks.print_stack()
+
+print("")
+
+# to_do_tasks (PQ)
+print("YOUR TASKS REMAINING - (Queue)")
+user.to_do_tasks.print_queue()
