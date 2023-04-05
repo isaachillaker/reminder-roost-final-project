@@ -33,6 +33,11 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(len(user.to_do_tasks), 0)
         self.assertEqual(len(user.completed_tasks), 2)
 
+    def test_complete_task_no_tasks(self):
+        user = User('John', 'Doe')
+        completed_task = user.complete_task()
+        self.assertIsNone(completed_task)
+
     def test_delete_task(self):
         user = User("Bob", "Smith")
         user.add_task("Task 1", 2)
@@ -44,10 +49,24 @@ class UserTestCase(unittest.TestCase):
         # Ensure that length of 'deleted_tasks' is 1, because there should be 1 task in it
         self.assertEqual(len(user.deleted_tasks), 1)
 
-    def test_complete_task_no_tasks(self):
-        user = User('John', 'Doe')
-        completed_task = user.complete_task()
-        self.assertIsNone(completed_task)
+    def test_undo(self):
+        user = User("Bob", 'Smith')
+        user.add_task("Task 1", 2)
+        user.add_task("Task 2", 1)
+        user.add_task("Task 3", 3)
+
+        # Delete 'Task 3' and 'Task 2'
+        user.delete_task("Task 3")
+        user.delete_task("Task 2")
+
+        # Ensure that both tasks are moved into 'deleted_tasks'
+        self.assertEqual(len(user.deleted_tasks), 2)
+
+        # Undo Deletion, removing 'Task 2'
+        self.assertEqual(user.undo(), "Task 2")
+
+        # Check that one task remains in 'deleted_tasks'
+        self.assertEqual(len(user.deleted_tasks), 1)
 
 
 class TestPriorityQueue(unittest.TestCase):
@@ -132,4 +151,3 @@ class TestStack(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
