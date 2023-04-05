@@ -15,6 +15,7 @@ user.to_do_tasks.print_queue()
 print("")
 
 # Complete highest priority task
+user.complete_task("Do homework")
 user.complete_task()
 
 # completed_tasks (Stack)
