@@ -81,6 +81,16 @@ class User:
                 self.deleted_tasks.push(item)
                 return item
 
+    def undo(self):
+        if len(self.completed_tasks) == 0 and len(self.deleted_tasks) == 0:
+            return None
+
+        if len(self.deleted_tasks) > 0:
+            task = self.deleted_tasks.pop()
+            priority = self.to_do_tasks._queue[0][0]
+            self.to_do_tasks.push(task, priority)
+            return task
+
 
 class PriorityQueue:
     def __init__(self):
