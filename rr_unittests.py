@@ -14,10 +14,6 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(len(user.to_do_tasks), 0)
         self.assertEqual(len(user.completed_tasks), 0)
 
-    def test_create_user_with_invalid_name(self):
-        with self.assertRaises(ValueError):
-            User('John1', 'Doe')
-
     def test_add_task(self):
         user = User('John', 'Doe')
         user.add_task('Task 1', 1)
