@@ -2,11 +2,24 @@ import heapq, re
 
 
 class User:
-    def __init__(self, first_name, last_name):
-        self.first_name = self.validate_name(first_name)
-        self.last_name = self.validate_name(last_name)
+    def __init__(self, first_name=None, last_name=None):
+        if first_name is None:
+            first_name = self.get_valid_name("Enter your first name:")
+        if last_name is None:
+            last_name = self.get_valid_name("Enter your last name: ")
+        self.first_name = first_name
+        self.last_name = last_name
         self.to_do_tasks = PriorityQueue()
         self.completed_tasks = Stack()
+
+    def get_valid_name(self, name):
+        while True:
+            name = input(f"{name}")
+            try:
+                validated_name = self.validate_name(name)
+                return validated_name
+            except ValueError as e:
+                print(e)
 
     def validate_name(self, name):
         # Check that the name contains only letters and allowed symbols
