@@ -33,6 +33,17 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(len(user.to_do_tasks), 0)
         self.assertEqual(len(user.completed_tasks), 2)
 
+    def test_delete_task(self):
+        user = User("Bob", "Smith")
+        user.add_task("Task 1", 2)
+        user.add_task("Task 2", 3)
+        user.add_task("Task 3", 1)
+        # Delete 'task 1' and ensure that the length of 'to_do_tasks' changed too
+        self.assertEqual(user.delete_task("Task 1"), "Task 1")
+        self.assertEqual(len(user.to_do_tasks), 2)
+        # Ensure that length of 'deleted_tasks' is 1, because there should be 1 task in it
+        self.assertEqual(len(user.deleted_tasks), 1)
+
     def test_complete_task_no_tasks(self):
         user = User('John', 'Doe')
         completed_task = user.complete_task()
