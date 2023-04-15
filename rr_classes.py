@@ -1,4 +1,6 @@
-import heapq, re
+import heapq
+import re
+from tkinter import *
 
 
 class User:
@@ -136,6 +138,9 @@ class PriorityQueue:
         for _, _, item in sorted(self._queue):
             print(item)
 
+    def queue(self):
+        return [item for _, _, item in sorted(self._queue)]
+
     def __len__(self):
         return len(self._queue)
 
@@ -166,3 +171,99 @@ class Stack:
 
     def __len__(self):
         return len(self._items)
+
+
+class GUI:
+    def __init__(self, root):
+        self.root = root
+        root.title("Task Manager")
+        root.geometry('600x750')
+
+        self.user = User("Isaac", "Hillaker")  # create a User object
+
+        self.heading_label = Label(root, text=f"{self.user.first_name}'s tasks", font=("Helvetica", 18, "bold"))
+        self.heading_label.pack()
+
+        self.instructions_label = Label(root,
+                                        text="Type in a task then click the 'Add Task' button to add your new task.",
+                                        font=("Helvetica", 12))
+        self.instructions_label.pack()
+
+        # create task entry box and add task button
+        self.task_label_1 = Label(root,
+                                  text="Task name:",
+                                  font=("Helvetica", 12))
+        self.task_label_1.pack()
+
+        # TASK NAME ENTRY
+        self.task_1_entry = Entry(root, width=25)
+        self.task_1_entry.pack()
+        self.task_label_2 = Label(root,
+                                  text="Task priority level (1, 2, or 3):",
+                                  font=("Helvetica", 12))
+        self.task_label_2.pack()
+        self.invalid_input_label = Label(root, fg="red")
+        self.invalid_input_label.pack()
+
+        # PRIORITY LEVEL ENTRY
+        self.task_2_entry = Entry(root, width=25)
+        self.task_2_entry.pack()
+
+        # BUTTONS
+        self.add_button = Button(root, width=10, height=2, bg="green", fg="white", text="Add Task",
+                                 command=self.add_task)
+        self.add_button.pack()
+        self.remove_button = Button(root, width=10, height=2, bg="red", fg="white", text="Delete Task",
+                                    command=self.add_task)
+        self.remove_button.pack()
+
+        self.undo_button = Button(root, width=10, height=2, bg="yellow", fg="black", text="Undo",
+                                  command=self.add_task)
+        self.undo_button.pack()
+
+        # create listbox for tasks
+        self.tasks_listbox = Listbox(root, width=50)
+        self.tasks_listbox.pack()
+
+        self.heading_label = Label(root, text="Completed tasks", font=("Helvetica", 18, "bold"))
+        self.heading_label.pack()
+
+        # create listbox for completed tasks
+        self.completed_listbox = Listbox(root, width=50)
+        self.completed_listbox.pack()
+
+    def add_task(self):
+
+        if self.invalid_input_label:
+            self.invalid_input_label.config(text="")
+
+        task_name = self.task_1_entry.get()
+        task_priority = self.task_2_entry.get()
+
+        # Ensure that 'priority' is an integer
+        if task_priority.isdigit():
+            task_priority = int(task_priority)
+            if task_priority in range(1, 4):
+                # add task to the user's task list
+                self.user.add_task(task_name, task_priority)
+                # Remove input values from the entry boxes
+                self.task_1_entry.delete(0, END)
+                self.task_2_entry.delete(0, END)
+                # add task to To-Do List in the GUI
+                self.tasks_listbox.insert(END, task_name)
+                # Update the listbox to reflect newly added tasks and their priority levels
+                self.update_listbox()
+            else:
+                self.invalid_input_label.config(text="Number out of range. Must be a 1, 2, or 3!")
+        else:
+            self.invalid_input_label.config(text="Must be a number: 1, 2, or 3!")
+
+    def update_listbox(self):
+        self.tasks_listbox.delete(0, END)
+        pq = self.user.to_do_tasks
+        task_list = pq._queue
+        for _, priority, name in task_list:
+            self.tasks_listbox.insert(END, name)
+
+    def move_to_completed(self):
+        pass
