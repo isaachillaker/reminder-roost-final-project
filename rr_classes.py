@@ -233,35 +233,70 @@ class GUI:
         self.completed_listbox.pack()
 
     def add_task(self):
+        """
+        This method adds a new task to the To Do List section of the GUI.
 
+        1) Ensure that if an error label is present, that it is removed with this method is called
+        2) Grab the contents of the two entry widgets and give them meaningful names
+        3) Ensure that the 'priority' input is a digit (by default it is entered as a string, so first we check
+        that the string contains only digits.
+        3.5) If the 'priority' input does NOT contain digits, return an error label to the GUI and prompt
+        user for new input.
+        4) Ensure that the digits are converted to integers
+        5) Ensure that the input entered is a 1, 2, or 3.
+        6) We add the task to the User object's PriorityQueue object by calling the 'add_task' method of the User. We
+        then delete the input from the entry widget boxes, so that the user can enter new data. We finally call the
+        update_listbox() method of the GUI class and populate the listbox with the latest data from the User object's
+        PriorityQueue.
+
+        """
+        # 1
         if self.invalid_input_label:
             self.invalid_input_label.config(text="")
 
+        # 2
         task_name = self.task_1_entry.get()
         task_priority = self.task_2_entry.get()
 
+        # 3
         # Ensure that 'priority' is an integer
         if task_priority.isdigit():
+            # 4
             task_priority = int(task_priority)
+            # 5
             if task_priority in range(1, 4):
+                # 6
                 # add task to the user's task list
                 self.user.add_task(task_name, task_priority)
                 # Remove input values from the entry boxes
                 self.task_1_entry.delete(0, END)
                 self.task_2_entry.delete(0, END)
-                # add task to To-Do List in the GUI
-                self.tasks_listbox.insert(END, task_name)
                 # Update the listbox to reflect newly added tasks and their priority levels
                 self.update_listbox()
             else:
                 self.invalid_input_label.config(text="Number out of range. Must be a 1, 2, or 3!")
+        # 3.5
         else:
             self.invalid_input_label.config(text="Must be a number: 1, 2, or 3!")
 
     def update_listbox(self):
+        """
+        When a new task is successfully added to the to do list, this method will update
+        the listbox to reflect those changes. Any new items added to the listbox will
+        be sorted by their priority number (with 1's on the bottom, 2's in the middle, and
+        3's on the top).
+
+        1) Delete old listbox contents
+        2) Access the User object's '_queue' attribute (a list)
+        3) Loop through the current version of the Users' '_queue' list and
+        add them to the new listbox
+        """
+        # 1
         self.tasks_listbox.delete(0, END)
+        # 2
         pq = self.user.to_do_tasks
         task_list = pq._queue
+        # 3
         for _, priority, name in task_list:
             self.tasks_listbox.insert(END, name)
 
