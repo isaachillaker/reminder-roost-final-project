@@ -311,6 +311,16 @@ class GUI:
             self.tasks_listbox.insert(END, name)
 
     def delete_task(self):
+        """
+        This method deletes a task from the To-Do listbox and moves it
+        to the Deleted Tasks listbox. It also deletes the task from the User object's
+        'to_do_list' PQ object and moves it to the 'deleted_tasks' Stack object.
+        """
+
+        # Check if an item is selected in the tasks listbox
+        if not self.tasks_listbox.curselection():
+            return
+
         # Get the selected item from the tasks listbox
         selected_item = self.tasks_listbox.get(self.tasks_listbox.curselection())
 
