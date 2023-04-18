@@ -210,27 +210,37 @@ class GUI:
         self.task_2_entry.pack()
 
         # BUTTONS
+        #ADD TASK button
         self.add_button = Button(root, width=10, height=2, bg="green", fg="white", text="Add Task",
                                  command=self.add_task)
         self.add_button.pack()
+        # DELETE TASK button
         self.remove_button = Button(root, width=10, height=2, bg="red", fg="white", text="Delete Task",
-                                    command=self.add_task)
+                                    command=self.delete_task)
         self.remove_button.pack()
 
+        # UNDO button
         self.undo_button = Button(root, width=10, height=2, bg="yellow", fg="black", text="Undo",
                                   command=self.add_task)
         self.undo_button.pack()
 
         # create listbox for tasks
+        self.heading_label = Label(root, text="To-Do Tasks", font=("Helvetica", 18, "bold"))
+        self.heading_label.pack()
         self.tasks_listbox = Listbox(root, width=50)
         self.tasks_listbox.pack()
 
-        self.heading_label = Label(root, text="Completed tasks", font=("Helvetica", 18, "bold"))
-        self.heading_label.pack()
-
         # create listbox for completed tasks
-        self.completed_listbox = Listbox(root, width=50)
-        self.completed_listbox.pack()
+        # self.heading_label = Label(root, text="Completed Tasks", font=("Helvetica", 18, "bold"))
+        # self.heading_label.pack()
+        # self.completed_listbox = Listbox(root, width=50)
+        # self.completed_listbox.pack()
+
+        # create listbox for deleted tasks
+        self.heading_label = Label(root, text="Deleted Tasks", font=("Helvetica", 18, "bold"))
+        self.heading_label.pack()
+        self.deleted_tasks_listbox = Listbox(root, width=50)
+        self.deleted_tasks_listbox.pack()
 
     def add_task(self):
         """
@@ -300,5 +310,18 @@ class GUI:
         for _, priority, name in task_list:
             self.tasks_listbox.insert(END, name)
 
-    def move_to_completed(self):
-        pass
+    def delete_task(self):
+        # Get the selected item from the tasks listbox
+        selected_item = self.tasks_listbox.get(self.tasks_listbox.curselection())
+
+        # Update User object to update 'to_do_tasks' task removal
+        self.user.delete_task(selected_item)
+
+        # Remove the selected item from the tasks listbox
+        self.tasks_listbox.delete(self.tasks_listbox.curselection())
+
+        # Add the selected item to the deleted task listbox
+        self.deleted_tasks_listbox.insert(END, selected_item)
+
+        # Update the To-Do listbox to make sure remaining items are ordered
+        self.update_listbox()
