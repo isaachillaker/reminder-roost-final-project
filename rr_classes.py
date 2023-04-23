@@ -290,8 +290,8 @@ class GUI:
 
         1) Delete old listbox contents
         2) Access the User object's '_queue' attribute (a list)
-        3) Loop through the current version of the Users' '_queue' list and
-        add them to the new listbox
+        3) Sort the task list by priority
+        4) Loop through the sorted list and add tasks to the new listbox
         """
         # 1
         self.tasks_listbox.delete(0, END)
@@ -299,7 +299,9 @@ class GUI:
         pq = self.user.to_do_tasks
         task_list = pq._queue
         # 3
-        for _, priority, name in task_list:
+        sorted_tasks = sorted(task_list, key=lambda x: x[0])
+        # 4
+        for _, priority, name in sorted_tasks:
             self.tasks_listbox.insert(END, name)
 
     def delete_task(self):
