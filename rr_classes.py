@@ -104,20 +104,12 @@ class User:
         for priority, index, item in self.to_do_tasks._queue:
             if item == task:
                 self.to_do_tasks._queue.remove((priority, index, item))
-                self.deleted_tasks.push(item)
-                return item
+                self.deleted_tasks.push((-priority, index, item))
+                return (priority, index, item)
 
     def undo(self):
-        """
-        This method removes the last item added to the 'deleted_tasks' Stack object and returns it
-        to the 'to_do_tasks' PQ object.
-        """
-        if len(self.deleted_tasks) == 0:
-            return None
-
         if len(self.deleted_tasks) > 0:
-            task = self.deleted_tasks.pop()
-            priority = self.to_do_tasks._queue[0][0]
+            priority, index, task = self.deleted_tasks.pop()
             self.to_do_tasks.push(task, priority)
             return task
 
@@ -210,7 +202,7 @@ class GUI:
         self.task_2_entry.pack()
 
         # BUTTONS
-        #ADD TASK button
+        # ADD TASK button
         self.add_button = Button(root, width=10, height=2, bg="green", fg="white", text="Add Task",
                                  command=self.add_task)
         self.add_button.pack()
@@ -220,8 +212,8 @@ class GUI:
         self.remove_button.pack()
 
         # UNDO button
-        self.undo_button = Button(root, width=10, height=2, bg="yellow", fg="black", text="Undo",
-                                  command=self.add_task)
+        self.undo_button = Button(root, width=10, height=2, bg="yellow", fg="black", text="Undo Deletion",
+                                  command=self.undo_deletion)
         self.undo_button.pack()
 
         # create listbox for tasks
@@ -332,6 +324,16 @@ class GUI:
 
         # Add the selected item to the deleted task listbox
         self.deleted_tasks_listbox.insert(END, selected_item)
+
+        # Update the To-Do listbox to make sure remaining items are ordered
+        self.update_listbox()
+
+    def undo_deletion(self):
+        # Get last deleted item from User object's 'deleted_tasks' Stack
+        self.user.undo()
+
+        # Remove the last item from the deleted tasks listbox
+        self.deleted_tasks_listbox.delete(self.deleted_tasks_listbox.index(END) - 1)
 
         # Update the To-Do listbox to make sure remaining items are ordered
         self.update_listbox()
