@@ -159,7 +159,7 @@ class Stack:
 
     def print_stack(self):
         for item in reversed(self._items):
-            print(item)
+            return item
 
     def __len__(self):
         return len(self._items)
@@ -169,9 +169,9 @@ class GUI:
     def __init__(self, root):
         self.root = root
         root.title("Task Manager")
-        root.geometry('1280x700')
+        root.geometry('815x500')
 
-        self.user = User("Isaac", "Hillaker")  # create a User object
+        self.user = User("Isaac", "Hillaker")  # create a User object named after me (the student!)
 
         #Heading Label
         self.heading_label = Label(root, text=f"{self.user.first_name}'s tasks", font=("Helvetica", 18, "bold"))
@@ -204,7 +204,10 @@ class GUI:
         self.task_2_entry = Entry(root, width=25)
         self.task_2_entry.place(x=10, y=150)
 
+        # *******************
         # BUTTONS
+        # *******************
+
         # ADD TASK button
         self.add_button = Button(root, width=10, height=2, bg="green", fg="white", text="Add New",
                                  command=self.add_task)
@@ -217,7 +220,7 @@ class GUI:
 
         # COMPLETE TASK button
         self.complete_button = Button(root, width=10, height=2, bg="blue", fg="white", text="Complete Task",
-                                    command=self.delete_task)
+                                    command=self.complete_task)
         self.complete_button.place(x=10, y=435)
 
         # DELETE TASK button
@@ -319,6 +322,24 @@ class GUI:
         # 4
         for _, priority, name in sorted_tasks:
             self.tasks_listbox.insert(END, name)
+
+    def complete_task(self):
+        # Get the selected item from the tasks listbox
+        selected_item = self.tasks_listbox.get(self.tasks_listbox.curselection())
+
+        # Add task to User object's Stack 'completed_tasks'
+        self.user.complete_task(selected_item)
+
+        # Save current version of 'completed_list' Stack
+        completed_tasks = self.user.completed_tasks.print_stack()
+
+        # Update 'Completed Tasks Listbox' with the current items in User's 'completed_tasks' Stack object
+        for task in completed_tasks:
+            self.completed_listbox.insert(END, task)
+
+        # Update the To-Do Listbox with User's current 'to_do_tasks' PQ object
+        self.update_listbox()
+
 
     def delete_task(self):
         """
