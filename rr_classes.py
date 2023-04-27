@@ -169,70 +169,86 @@ class GUI:
     def __init__(self, root):
         self.root = root
         root.title("Task Manager")
-        root.geometry('600x750')
+        root.geometry('1280x700')
 
         self.user = User("Isaac", "Hillaker")  # create a User object
 
+        #Heading Label
         self.heading_label = Label(root, text=f"{self.user.first_name}'s tasks", font=("Helvetica", 18, "bold"))
-        self.heading_label.pack()
+        self.heading_label.place(x=10, y=5)
 
         self.instructions_label = Label(root,
                                         text="Type in a task then click the 'Add Task' button to add your new task.",
                                         font=("Helvetica", 12))
-        self.instructions_label.pack()
+        self.instructions_label.place(x=10, y=45)
 
         # create task entry box and add task button
         self.task_label_1 = Label(root,
                                   text="Task name:",
                                   font=("Helvetica", 12))
-        self.task_label_1.pack()
+        self.task_label_1.place(x=10, y=70)
 
         # TASK NAME ENTRY
         self.task_1_entry = Entry(root, width=25)
-        self.task_1_entry.pack()
+        self.task_1_entry.place(x=10, y=95)
+
         self.task_label_2 = Label(root,
                                   text="Task priority level (1, 2, or 3):",
                                   font=("Helvetica", 12))
-        self.task_label_2.pack()
-        self.invalid_input_label = Label(root, fg="red")
-        self.invalid_input_label.pack()
+        self.task_label_2.place(x=10, y=120)
+
+        self.invalid_input_label = Label(root, fg="red", bg="green")
+        self.invalid_input_label.place(x=175, y=150)
 
         # PRIORITY LEVEL ENTRY
         self.task_2_entry = Entry(root, width=25)
-        self.task_2_entry.pack()
+        self.task_2_entry.place(x=10, y=150)
 
         # BUTTONS
         # ADD TASK button
-        self.add_button = Button(root, width=10, height=2, bg="green", fg="white", text="Add Task",
+        self.add_button = Button(root, width=10, height=2, bg="green", fg="white", text="Add New",
                                  command=self.add_task)
-        self.add_button.pack()
-        # DELETE TASK button
-        self.remove_button = Button(root, width=10, height=2, bg="red", fg="white", text="Delete Task",
-                                    command=self.delete_task)
-        self.remove_button.pack()
+        self.add_button.place(x=10, y=175)
 
         # UNDO button
         self.undo_button = Button(root, width=10, height=2, bg="yellow", fg="black", text="Undo Deletion",
                                   command=self.undo_deletion)
-        self.undo_button.pack()
+        self.undo_button.place(x=100, y=175)
 
-        # create listbox for tasks
+        # COMPLETE TASK button
+        self.complete_button = Button(root, width=10, height=2, bg="blue", fg="white", text="Complete Task",
+                                    command=self.delete_task)
+        self.complete_button.place(x=10, y=435)
+
+        # DELETE TASK button
+        self.remove_button = Button(root, width=10, height=2, bg="red", fg="white", text="Delete Task",
+                                    command=self.delete_task)
+        self.remove_button.place(x=100, y=435)
+
+        #*******************
+        # LISTBOXES & LABELS
+        #*******************
+
+        # TO-DO TASKS: Label & Listbox
         self.heading_label = Label(root, text="To-Do Tasks", font=("Helvetica", 18, "bold"))
-        self.heading_label.pack()
+        self.heading_label.place(x=10, y=225)
+
         self.tasks_listbox = Listbox(root, width=50)
-        self.tasks_listbox.pack()
+        self.tasks_listbox.place(x=10, y=260)
 
-        # create listbox for completed tasks
-        # self.heading_label = Label(root, text="Completed Tasks", font=("Helvetica", 18, "bold"))
-        # self.heading_label.pack()
-        # self.completed_listbox = Listbox(root, width=50)
-        # self.completed_listbox.pack()
+        # COMPLETED TASKS: Label and Listbox
+        self.heading_label = Label(root, text="Completed Tasks", font=("Helvetica", 18, "bold"))
+        self.heading_label.place(x=500, y=5)
 
-        # create listbox for deleted tasks
+        self.completed_listbox = Listbox(root, width=50)
+        self.completed_listbox.place(x=500, y=40)
+
+        # DELETED TASKS: Label & Listbox
         self.heading_label = Label(root, text="Deleted Tasks", font=("Helvetica", 18, "bold"))
-        self.heading_label.pack()
+        self.heading_label.place(x=500, y=215)
+
         self.deleted_tasks_listbox = Listbox(root, width=50)
-        self.deleted_tasks_listbox.pack()
+        self.deleted_tasks_listbox.place(x=500, y=250)
 
     def add_task(self):
         """
