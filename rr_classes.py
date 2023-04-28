@@ -157,9 +157,15 @@ class Stack:
     def is_empty(self):
         return len(self._items) == 0
 
+    # def print_stack(self):
+    #     for item in reversed(self._items):
+    #         return item
+
     def print_stack(self):
+        items_list = []
         for item in reversed(self._items):
-            return item
+            items_list.append(item)
+        return items_list
 
     def __len__(self):
         return len(self._items)
@@ -330,16 +336,16 @@ class GUI:
         # Add task to User object's Stack 'completed_tasks'
         self.user.complete_task(selected_item)
 
-        # Save current version of 'completed_list' Stack
+        # Get the current version of 'completed_list' Stack
         completed_tasks = self.user.completed_tasks.print_stack()
 
         # Update 'Completed Tasks Listbox' with the current items in User's 'completed_tasks' Stack object
+        self.completed_listbox.delete(0, END)
         for task in completed_tasks:
             self.completed_listbox.insert(END, task)
 
         # Update the To-Do Listbox with User's current 'to_do_tasks' PQ object
         self.update_listbox()
-
 
     def delete_task(self):
         """
