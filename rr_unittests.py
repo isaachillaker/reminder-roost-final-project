@@ -1,3 +1,15 @@
+"""
+AUTHOR: Isaac Hillaker
+ASSIGNMENT: Final Project: Task Manager
+DATE: 04/28/2023
+INFO:
+
+    These unit tests test the four classes and their methods, found in rr_classes.py. The rr_classes.py file is
+    found in the same directory as these unit tests.
+
+I completed this assignment without any unauthorized assistance.
+"""
+
 import unittest
 from unittest.mock import patch
 from tkinter import Tk, END

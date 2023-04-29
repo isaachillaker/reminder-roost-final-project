@@ -1,6 +1,125 @@
+"""
+AUTHOR: Isaac Hillaker
+ASSIGNMENT: Final Project: Task Manager
+DATE: 04/28/2023
+INFO:
+
+    This program implements a Task Manager program by using four separate class: Stack, PriorityQueue, User, and GUI.
+    A more detailed explanation of each can be found in the classes and their respective methods.
+
+    There is driver code in rr_driver.py and unit tests in rr_unittests.py, both of which are located in
+    this same directory.
+
+I completed this assignment without any unauthorized assistance.
+"""
+
 import heapq
 import re
 from tkinter import *
+
+
+class PriorityQueue:
+    """
+    This class implements a priority queue data structure using the heapq module, which relies on Python lists.
+
+    The queue is initialized as an empty list and an index is set to 0. The index is used to ensure that items
+    with the same priority are inserted in the order they were added
+    """
+
+    def __init__(self):
+        self._queue = []
+        self._index = 0
+
+    def push(self, item, priority):
+        """
+        Adding a task in this program requires a task name (item) and a priority level (priority) which must be 1, 2,
+        or 3.
+
+        This method takes an item and priority as arguments. The heappush method (built-in to heapq) inserts the item
+        into the queue as a tuple, where a String (item) an Integer (priority), and an index are stored.
+        """
+        heapq.heappush(self._queue, (-priority, self._index, item))
+        self._index += 1
+
+    def pop(self):
+        """
+        Returns the top item from the queue
+        """
+        return heapq.heappop(self._queue)[-1]
+
+    def print_queue(self):
+        """
+        Iterates through the queue, returning all its items.
+        """
+        for _, _, item in sorted(self._queue):
+            print(item)
+
+    def queue(self):
+        """
+        Returns a list of items in the queue by their priority.
+        """
+        return [item for _, _, item in sorted(self._queue)]
+
+    def __len__(self):
+        """
+        Returns the length of the priority queue.
+        """
+        return len(self._queue)
+
+
+class Stack:
+    """
+    This class implements a simple Stack data structure, based on the 'Last In First Out' mantra. It relies heavily
+    on Python lists, which are ideal for implementing Stacks.
+
+    In this program this class is utilized as a 'completed_tasks' and 'deleted_tasks' objects in the User class.
+    """
+
+    def __init__(self):
+        self._items = []
+
+    def push(self, item):
+        """
+        Adds a task (item) to the _items list.
+        """
+        self._items.append(item)
+
+    def pop(self):
+        """
+        Deletes and returns the 'top' item from the _items list.
+        """
+        if len(self._items) == 0:
+            raise IndexError('pop from empty stack')
+        return self._items.pop()
+
+    def peek(self):
+        """
+        Views the top task in the _items list, but does not remove or manipulate it.
+        """
+        if len(self._items) == 0:
+            raise IndexError('peek from empty stack')
+        return self._items[-1]
+
+    def is_empty(self):
+        """
+        Returns 'True' if the _items list is empty
+        """
+        return len(self._items) == 0
+
+    def print_stack(self):
+        """
+        Returns the _items list for front end display.
+        """
+        items_list = []
+        for item in reversed(self._items):
+            items_list.append(item)
+        return items_list
+
+    def __len__(self):
+        """
+        Provides the length of the stack.
+        """
+        return len(self._items)
 
 
 class User:
@@ -19,6 +138,7 @@ class User:
     deleted before they could be completed).
 
     """
+
     def __init__(self, first_name=None, last_name=None):
         if first_name is None:
             first_name = self.get_valid_name("Enter your first name:")
@@ -137,108 +257,6 @@ class User:
             return task
 
 
-class PriorityQueue:
-    """
-    This class implements a priority queue data structure using the heapq module, which relies on Python lists.
-
-    The queue is initialized as an empty list and an index is set to 0. The index is used to ensure that items
-    with the same priority are inserted in the order they were added
-    """
-    def __init__(self):
-        self._queue = []
-        self._index = 0
-
-    def push(self, item, priority):
-        """
-        Adding a task in this program requires a task name (item) and a priority level (priority) which must be 1, 2,
-        or 3.
-
-        This method takes an item and priority as arguments. The heappush method (built-in to heapq) inserts the item
-        into the queue as a tuple, where a String (item) an Integer (priority), and an index are stored.
-        """
-        heapq.heappush(self._queue, (-priority, self._index, item))
-        self._index += 1
-
-    def pop(self):
-        """
-        Returns the top item from the queue
-        """
-        return heapq.heappop(self._queue)[-1]
-
-    def print_queue(self):
-        """
-        Iterates through the queue, returning all its items.
-        """
-        for _, _, item in sorted(self._queue):
-            print(item)
-
-    def queue(self):
-        """
-        Returns a list of items in the queue by their priority.
-        """
-        return [item for _, _, item in sorted(self._queue)]
-
-    def __len__(self):
-        """
-        Returns the length of the priority queue.
-        """
-        return len(self._queue)
-
-
-class Stack:
-    """
-    This class implements a simple Stack data structure, based on the 'Last In First Out' mantra. It relies heavily
-    on Python lists, which are ideal for implementing Stacks.
-
-    In this program this class is utilized as a 'completed_tasks' and 'deleted_tasks' objects in the User class.
-    """
-    def __init__(self):
-        self._items = []
-
-    def push(self, item):
-        """
-        Adds a task (item) to the _items list.
-        """
-        self._items.append(item)
-
-    def pop(self):
-        """
-        Deletes and returns the 'top' item from the _items list.
-        """
-        if len(self._items) == 0:
-            raise IndexError('pop from empty stack')
-        return self._items.pop()
-
-    def peek(self):
-        """
-        Views the top task in the _items list, but does not remove or manipulate it.
-        """
-        if len(self._items) == 0:
-            raise IndexError('peek from empty stack')
-        return self._items[-1]
-
-    def is_empty(self):
-        """
-        Returns 'True' if the _items list is empty
-        """
-        return len(self._items) == 0
-
-    def print_stack(self):
-        """
-        Returns the _items list for front end display.
-        """
-        items_list = []
-        for item in reversed(self._items):
-            items_list.append(item)
-        return items_list
-
-    def __len__(self):
-        """
-        Provides the length of the stack.
-        """
-        return len(self._items)
-
-
 class GUI:
     def __init__(self, root):
         """
@@ -353,9 +371,9 @@ class GUI:
         self.deleted_tasks_listbox = Listbox(root, width=50)
         self.deleted_tasks_listbox.place(x=500, y=250)
 
-    #*****************
+    # *****************
     # GUI METHODS
-    #*****************
+    # *****************
 
     def add_task(self):
         """

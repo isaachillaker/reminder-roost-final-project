@@ -1,3 +1,14 @@
+"""
+AUTHOR: Isaac Hillaker
+ASSIGNMENT: Final Project: Task Manager
+DATE: 04/28/2023
+INFO:
+
+    This driver runs the Task Manager app, utilizing the rr_classes.py file, found in this same directory.
+
+I completed this assignment without any unauthorized assistance.
+"""
+
 from rr_classes import User, GUI
 from tkinter import Tk
 
